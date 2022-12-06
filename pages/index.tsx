@@ -3,10 +3,12 @@ import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 
 
-export async function getServerSideProps() {
+export async function getServerSideProps({res}: any) {
   function getRndInteger(min: number, max: number) {
     return Math.floor(Math.random() * (max - min + 1) ) + min;
   }
+
+  res.setHeader('Cache-Control', `public, s-maxage=900, stale-while-revalidate=300`);
   
   try {
     const response = await fetch(`https://api.coinlore.net/api/ticker/?id=${getRndInteger(80,90)}`);
